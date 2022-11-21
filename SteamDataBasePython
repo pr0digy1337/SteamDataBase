@@ -1,0 +1,108 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import os
+print("\n\n\n","*"*30,"Steam Database 2020-2021","*"*30)
+if not os.path.isfile("steamdatabase.csv"):
+    df=pd.DataFrame()
+else:
+    df=pd.read_csv("steamdatabase.csv",index_col=0)
+
+choice=0
+while choice!=None:
+    print("\n\t\t\t","#"*40)
+    print("\t\t\t\t 1. Add Details")
+    print("\t\t\t\t 2. Display Details")
+    print("\t\t\t\t 3. Update Details")
+    print("\t\t\t\t 4. Remove Details")
+    print("\t\t\t\t 5. Graphical View")
+    print("\t\t\t\t 6. Exit")
+    print("\t\t\t","#"*40)
+    print("*"*87)
+    choice=int(input("Enter your choice : "))
+    print("-"*87)
+    if choice==1: # ADD DETAILS CODE
+        print("\t\t","-"*10,"*"*5,"-"*10)
+        eid=input("Enter the Game code : ")
+        nm=input("Name of game : ")
+        sal=int(input("Number of copies sold : "))
+        nmp=input("Enter the name of publusher: ")
+        rat=float(input("Rating : "))
+        sample_dict={"Id":eid,"Name":nm,"Copies sold":sal,"publisher":nmp,"Rating":rat}
+        if df.empty:
+            df=pd.DataFrame(sample_dict,index=[0])
+        else:
+            df=df.append(sample_dict,ignore_index=True)
+
+        df.to_csv("steamdatabase.csv")
+        print("*"*20,"Details added successfully","*"*20)
+
+    elif choice==2: #DISPLAY DETAILS CODE
+     
+        if not os.path.isfile("steamdatabase.csv"):
+            print("\n\t\t Sorry!!! No details Available...Kindly Add details")
+        else:
+            print("*"*20,"Displaying Details","*"*20)
+            df=pd.read_csv("steamdatabase.csv",index_col=0)
+            print(df)
+            print("*"*20,"Details printed successfully","*"*20)
+
+    elif choice==3: # UPDATE DETAILS CODE
+        if not os.path.isfile("steamdatabase.csv"):
+            print("\n\t\t Sorry!!! No details Available...Kindly Add details")
+        else:
+            print("*"*20,"Displaying Details","*"*20)
+            df=pd.read_csv("steamdatabase.csv",index_col=0)
+            print(df)
+            print("\t\t","-"*10,"*"*5,"-"*10)
+            row_index=int(input("Enter the Employee Row index for which you want to update the value : "))
+            c_name=input("Enter the Column name for which you want to update the value: ")
+            newvalue=input("Enter the New value : ")
+            cnt=len(df)
+            for i in range(cnt):
+                if i==row_index:
+                    if c_name=="Id":
+                        df.iloc[i,0]=eval(newvalue)
+                    elif c_name=="Name":
+                        df.iloc[i,1]=newvalue
+                    elif c_name=="Salary":
+                        df.iloc[i,2]=eval(newvalue)
+                    else:
+                        print("\n\n","@"*10,"Enter the correct column name as it is case sensitive","@"*10)
+            df.to_csv("steamdatabase.csv")
+            print("\t\t***** Details Updated successfully *****")
+            
+    elif choice==4: # REMOVE DETAILS CODE
+        if not os.path.isfile("steamdatabase.csv"):
+            print("\n\t\t Sorry!!! No details Available...Kindly Add details")
+        else:
+            print("*"*20,"Displaying Details","*"*20)
+            df=pd.read_csv("steamdatabase.csv",index_col=0)
+            print(df)
+            print("\t\t","-"*10,"*"*5,"-"*10)
+            value=int(input("Enter the row index on which you want to remove the record : "))
+            df=df.drop([value])
+            df.to_csv("steamdatabase.csv")
+            print("\t\t***** Record deleted successfully *****")
+    
+    elif choice==5: # GRAPHICAL REPRESENTATION CODE
+        if not os.path.isfile("steamdatabase.csv"):
+            print("\n\t\t Sorry!!! No details Available...Kindly Add details")
+        else:
+            print("*"*20,"Displaying Graphical view of Employees Salary","*"*20)
+            df=pd.read_csv("steamdatabase.csv",index_col=0)
+            print(df)
+            print("\t\t","-"*10,"*"*5,"BAR GRAPH","*"*5,"-"*10)
+            n=df.sal["Number of copies sold"]
+            s=df.rat["Rating of the game"]
+            plt.bar(n,s)
+            plt.show()
+            #df.to_csv("sample.csv")
+    
+    elif choice==6: # EXIT CODE
+        print('\n\t\t\t\t !!! THANK YOU !!!')
+        choice=None
+
+    else:
+        print('\n\t\t\t ## PLEASE ENTER VALID CHOICES [1-5] ONLY ##')
+
+# END OF PROJECT
